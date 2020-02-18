@@ -1,86 +1,169 @@
 import React from "react";
 
-class PD1 extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            name: "",
-            surname: "",
-            gender: "",
-            age: null,
-        };
-        this.tempState = {
-            name: "",
-            surname: "",
-            gender: "",
-            age: null,
-        };
+export default class PD1 extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      username: "",
+      usersurname: "",
+      sex: "",
+      age: "",
+      errors: {
+        username: false,
+        usersurname: false,
+        sex: false,
+        age: false
+      }
+    };
+    this.messages = {
+      username_incorrect: "Imię piszemy wielką literą",
+      lenght_incorrect:
+        "Imię i nazwisko muszą zawierać co najmniej dwie litery",
+      usersurname_incorrect: "Nazwisko piszemy wielką literą",
+      sex_incorrect: "Podaj płeć",
+      age_incorrect: "Wiek musi być cyfrą"
+    };
+  }
+
+  handleChange = e => {
+    const name = e.target.name;
+    const value = e.target.value;
+    this.setState({
+      [name]: value
+    });
+  };
+
+  handleSubmit = e => {
+    e.preventDefault();
+    const validation = this.formValidation();
+    this.setState({
+      errors: {
+        username: !validation.username,
+        usersurname: !validation.usersurname,
+        age: !validation.age,
+        sex: !validation.sex,
+        lenght: !validation.lenght
+      }
+    });
+  };
+
+  formValidation = () => {
+    let username = false;
+    let usersurname = false;
+    let age = false;
+    let sex = false;
+    let lenght = false;
+    let correct = false;
+    let firstLetterName =
+      this.state.username.charAt(0).toUpperCase() +
+      this.state.username.slice(1);
+    let firstLetterSurname =
+      this.state.usersurname.charAt(0).toUpperCase() +
+      this.state.usersurname.slice(1);
+    let ageNumber = this.state.age;
+
+    if (this.state.username.length > 1 && this.state.usersurname.length > 1) {
+      lenght = true;
     }
-
-    changeState = () => {
-        this.setState({
-            name: this.tempState.name,
-            surname: this.tempState.surname,
-            gender: this.tempState.gender,
-            age: this.tempState.age
-        });
-
+    if (this.state.username === firstLetterName) {
+      username = true;
+    }
+    if (this.state.usersurname === firstLetterSurname) {
+      usersurname = true;
+    }
+    if (this.state.age !== "" && Number(ageNumber)) {
+      age = true;
+    }
+    if (this.state.sex !== "") {
+      sex = true;
+    }
+    if (username && usersurname && age && lenght && sex) {
+      correct = true;
+    }
+    return {
+      correct,
+      username,
+      usersurname,
+      lenght,
+      age,
+      sex
     };
+  };
 
-    myChangeHandler = (event) => {
-        //this.setState({[event.target.name]: event.target.value});
-        this.tempState[event.target.name] = event.target.value
-    };
-
-    validate = () => {
-        let zxc ="";
-        let upperName = this.tempState.name.charAt(0).toUpperCase()+ this.tempState.name.slice(1);
-        let upperSurname = this.tempState.surname.charAt(0).toUpperCase()+ this.tempState.surname.slice(1);
-        if (this.tempState.name !== upperName) {
-            zxc += "Imię piszemy wielką literą!";
-        }
-        if (this.tempState.surname !== upperSurname) {
-            zxc += " Nazwisko piszemy wielką literą!";
-        }
-        if (this.tempState.name.length < 2) {
-            zxc += this.tempState.name + " to nie jest Twoje imię";
-        }
-        if (zxc !== "") {
-            alert(zxc);
-        }
-    };
-
-    submit = (e) => {
-        e.preventDefault();
-        this.validate();
-        this.changeState();
-    };
-
-    render () {
-
-        return (
-            <div>
-        <form onSubmit={this.submit}>
+  render() {
+    return (
+      <div>
+        <form onSubmit={this.handleSubmit}>
+          <p>
+            Wpisz swoje imię:
             <input
-                type="text" name="name" placeholder="Imię:" onChange={this.myChangeHandler}
-            /><br/><br/>
+              type="text"
+              name="username"
+              value={this.state.username}
+              placeholder="Twoje imię"
+              onChange={this.handleChange}
+            />
+            <br />
+            {this.state.errors.username && (
+              <span>{this.messages.username_incorrect}</span>
+            )}
+          </p>
+          <br />
+          <p>
+            Wpisz swoje nazwisko:
             <input
-                type="text" name="surname" placeholder="Nazwisko:" onChange={this.myChangeHandler}
-            /><br/>
-            <p><input type="radio" name="gender" value="Mężczyza" onChange={this.myChangeHandler}/>M</p>
-            <p><input type="radio" name="gender" value="Kobieta" onChange={this.myChangeHandler}/>K</p>
+              type="text"
+              name="usersurname"
+              value={this.state.usersurname}
+              placeholder="Twoje nazwisko"
+              onChange={this.handleChange}
+            />
+            <br />
+            {this.state.errors.usersurname && (
+              <span>{this.messages.usersurname_incorrect}</span>
+            )}
+            <br />
+            {this.state.errors.lenght && (
+              <span>{this.messages.lenght_incorrect}</span>
+            )}
+          </p>
+          <br />
+          <p>Wybierz płeć:</p>
+          <select name="sex" onChange={this.handleChange}>
+            <option>Wybierz</option>
+            <option>kobieta</option>
+            <option>mężczyzna</option>
+          </select>
+          <br />
+          {this.state.errors.sex && <span>{this.messages.sex_incorrect}</span>}
+
+          <p>
+            Podaj swój wiek:
             <input
-                type="number" name="age" placeholder="Wiek:" onChange={this.myChangeHandler}
-            /><br/><br/>
-            <input type="submit"/>
+              type="text"
+              name="age"
+              value={this.state.age}
+              onChange={this.handleChange}
+            />
+            <br />
+            {this.state.errors.age && (
+              <span>{this.messages.age_incorrect}</span>
+            )}
+          </p>
+
+          <br />
+          <br />
+          <input type="submit" value="Zapisz" />
         </form>
-                <h1>Imię: {this.state.name}</h1>
-                <h1>Nazwisko: {this.state.surname}</h1>
-                <h1>Płeć: {this.state.gender}</h1>
-                <h1>Wiek: {this.state.age}</h1>
-            </div>
-        )
-    }
+        <br />
+        <p>Podałeś: {this.state.name}</p>
+        <ul>
+          <li>Imię: {this.state.username}</li>
+          <li>Nazwisko: {this.state.usersurname}</li>
+          <li>Płeć: {this.state.sex}</li>
+          <li>Wiek: {this.state.age}</li>
+        </ul>
+      </div>
+    );
+  }
 }
-
-export default PD1;
