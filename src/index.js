@@ -1,5 +1,5 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import PD1 from "./PD1/PD1";
+import RouterExample from "./PD5/routing.js";
 
-ReactDOM.render(<PD1 />, document.getElementById("root"));
+ReactDOM.render(<RouterExample />, document.getElementById("root"));
