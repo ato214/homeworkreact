@@ -1,7 +1,7 @@
 import React from "react";
 import NestedInParent from "./nestedInParent";
 
-class Parent extends React.Component {
+class Parent1 extends React.Component {
   render() {
     const author = { name: "Jan", surname: "Kowalski" };
     return (
@@ -12,4 +12,4 @@ class Parent extends React.Component {
   }
 }
 
-export default Parent;
+export default Parent1;

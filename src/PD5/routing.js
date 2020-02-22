@@ -1,9 +1,10 @@
 import React from "react";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
-import Home from "./home.js";
-import About from "./about.js";
-import Products from "./products.js";
-import Contact from "./contact.js";
+import PD1 from "../PD1/PD1.js";
+import Parent1 from "../PD2/parent.js";
+import Parent from "../PD3/parent.js";
+import LifecycleTest from "../PD4/LifecycleTest.js";
+
 
 export default function RouterExample() {
   return (
@@ -11,34 +12,34 @@ export default function RouterExample() {
       <div>
         <ul>
           <li>
-            <Link to="/">Home</Link>
+            <Link to="/PD1/PD1">PD1</Link>
           </li>
           <li>
-            <Link to="/about">About</Link>
+            <Link to="/PD2/parent">PD2</Link>
           </li>
           <li>
-            <Link to="/products">Products</Link>
+            <Link to="/PD3/parent">PD3</Link>
           </li>
           <li>
-            <Link to="/contact">Contact</Link>
+            <Link to="/PD4/LifecycleTest">PD4</Link>
           </li>
         </ul>
 
         <Switch>
-          <Route exact path="/">
-            <Home />
+          <Route exact path="/PD1/PD1">
+            <PD1 />
           </Route>
 
-          <Route path="/about">
-            <About />
+          <Route path="/PD2/parent">
+            <Parent1 />
           </Route>
 
-          <Route path="/products">
-            <Products />
+          <Route path="/PD3/parent">
+            <Parent />
           </Route>
 
-          <Route path="/contact">
-            <Contact />
+          <Route path="/PD4/LifecycleTest">
+            <LifecycleTest />
           </Route>
         </Switch>
       </div>
